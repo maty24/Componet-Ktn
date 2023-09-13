@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,6 +27,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -105,7 +109,6 @@ fun getOptions(titles: List<String>): List<CheckInfo> {
             onChekedChange = { myNewStatus -> status = myNewStatus }
         )
     }
-
 }
 
 @Preview(showBackground = true)
@@ -243,7 +246,6 @@ fun MyButtonExample() {
             Text(text = "Hola")
         }
     }
-
 }
 
 
@@ -367,6 +369,9 @@ fun MyCard() {
     }
 }
 
+//////////////////////BADGEDBOX///////////////////////////////////
+
+
 //esta es la weaita que poner como un numero arriba de un icono o algo por el estilo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -378,4 +383,48 @@ fun MyBadgeBox() {
         Icon(imageVector = Icons.Default.Star, contentDescription = "favorite")
     }
 
+}
+
+//////////////////////////////DIVIDER////////////////////
+
+@Composable
+fun MyDivider() {
+    Divider(
+        Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp), color = Color.Red
+    )
+}
+
+//////////////////////////////DROPDOWN////////////////////
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyDropDownMenu() {
+    var selectedText by rememberSaveable {
+        mutableStateOf("")
+    }
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+    var desserts = listOf("elao", "chocolate", "cafe", "cuenta ru")
+    Column(Modifier.padding(20.dp)) {
+        OutlinedTextField(
+            value = selectedText,
+            onValueChange = { selectedText = it },
+            enabled = false,
+            readOnly = true,
+            modifier = Modifier
+                .clickable { }
+                .fillMaxWidth()
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            desserts.forEach { desserts ->
+                DropdownMenuItem(text = { Text(text = desserts) }, onClick = { expanded = false })
+            }
+        }
+    }
 }
