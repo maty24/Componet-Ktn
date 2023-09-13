@@ -8,13 +8,23 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,6 +33,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -36,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -44,6 +57,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mati.jetpackcatalog.ui.theme.CheckInfo
 import com.mati.jetpackcatalog.ui.theme.JetpackcatalogTheme
 
 
@@ -62,22 +76,60 @@ class MainActivity : ComponentActivity() {
                     var myText by remember { mutableStateOf("") }
                     //las lambda pueden estar fuera de los parentesis
                     MyTextField(myText) { myText = it }
-                   */MyImage()
+*//*
+                    val myOptions = getOptions(listOf("matias", "ejemplo", "dani"))
+                    Column {
+                        myOptions.forEach {
+                            //el it es el valor del myOption
+                            MyCheckBoxWithTextCompleted(it)
+                        }
+                    }*/
+                    MyBadgeBox()
+
                 }
             }
         }
     }
 }
 
+@Composable
+fun getOptions(titles: List<String>): List<CheckInfo> {
+    return titles.map {
+        var status by rememberSaveable {
+            mutableStateOf(false)
+        }
+        CheckInfo(
+            //it es el valor de tites
+            title = it,
+            selected = status,
+            onChekedChange = { myNewStatus -> status = myNewStatus }
+        )
+    }
+
+}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     JetpackcatalogTheme {
-        MyIcon()
+        MyBadgeBox()
     }
 }
 
+
+@Composable
+fun MyCheckBoxWithTextCompleted(checkInfo: CheckInfo) {
+    Row(Modifier.padding(8.dp)) {
+        Checkbox(
+            checked = checkInfo.selected,
+            onCheckedChange = { checkInfo.onChekedChange(!checkInfo.selected) })
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = checkInfo.title)
+    }
+}
+
+
+////////////////////////////////
 @Composable
 fun MyText() {
     Column {
@@ -240,4 +292,90 @@ fun MyProgress() {
         CircularProgressIndicator(color = Color.Red, strokeWidth = 10.dp)
         LinearProgressIndicator(modifier = Modifier.padding(top = 32.dp), color = Color.Red)
     }
+}
+
+/////////////////////SWITCH//////////////
+
+@Composable
+fun MySwitch() {
+    //esto es para mantener el estado
+    var state by rememberSaveable {
+        mutableStateOf(false)
+    }
+    Switch(
+        checked = state,
+        onCheckedChange = { state = !state },
+        enabled = true,
+        colors = SwitchDefaults.colors(
+            //sin chekear
+            uncheckedThumbColor = Color.Red,
+            //con chekear
+            checkedThumbColor = Color.Green
+        )
+    )
+}
+
+@Composable
+fun MyCheckBox() {
+    var state by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    Checkbox(
+        checked = state,
+        onCheckedChange = { state = !state },
+        enabled = true
+    )
+}
+
+
+@Composable
+fun MyCheckBoxWithText() {
+    var state by rememberSaveable {
+        mutableStateOf(false)
+    }
+    Row(Modifier.padding(8.dp)) {
+        Checkbox(checked = state, onCheckedChange = { state = !state })
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = "Ejemplo 1")
+    }
+}
+
+//////////////CARD///////////////
+
+@Composable
+fun MyCard() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(14.dp),
+        elevation = CardDefaults.cardElevation(12.dp),
+        //
+        shape = MaterialTheme.shapes.small,
+        //estilo de los bordes
+        border = BorderStroke(2.dp, Color.Black),
+        //backgroud color
+        colors = CardDefaults.cardColors(Color.Magenta)
+
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(text = "ejemplo 1")
+            Text(text = "ejemplo 2")
+            Text(text = "ejemplo 3")
+
+        }
+    }
+}
+
+//esta es la weaita que poner como un numero arriba de un icono o algo por el estilo
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyBadgeBox() {
+    //el badge es el contenido del circulo de arriba
+    BadgedBox(
+        badge = { Text(text = "100") },
+    ) {
+        Icon(imageVector = Icons.Default.Star, contentDescription = "favorite")
+    }
+
 }
