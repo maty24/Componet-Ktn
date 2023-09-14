@@ -1,6 +1,7 @@
 package com.mati.jetpackcatalog
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
@@ -8,6 +9,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -72,7 +74,7 @@ class MainActivity : ComponentActivity() {
             JetpackcatalogTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+
                     color = MaterialTheme.colorScheme.background
                 ) {
                     /*
@@ -88,7 +90,28 @@ class MainActivity : ComponentActivity() {
                             MyCheckBoxWithTextCompleted(it)
                         }
                     }*/
-                    MyBadgeBox()
+                    /*
+                    var show by rememberSaveable { mutableStateOf(false) }
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Button(onClick = { show = true }) {
+                            Text(text = "Mostrar dialogo")
+                        }
+                        MyDialog(
+                            show = show,
+                            onDesmis = { show = false },
+                            onConfirm = { Log.i("mati", "ola mtis") })
+
+                    }*/
+                    var show by rememberSaveable { mutableStateOf(false) }
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Button(onClick = { show = true }) {
+                            Text(text = "Mostrar dialogo")
+                        }
+                        MyConfirmationDialog(
+                            show = show,
+                            onDesmis = { show = false }
+                        )
+                    }
 
                 }
             }
