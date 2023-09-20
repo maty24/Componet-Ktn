@@ -102,6 +102,7 @@ class MainActivity : ComponentActivity() {
                             onConfirm = { Log.i("mati", "ola mtis") })
 
                     }*/
+                    /*
                     var show by rememberSaveable { mutableStateOf(false) }
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         Button(onClick = { show = true }) {
@@ -111,7 +112,8 @@ class MainActivity : ComponentActivity() {
                             show = show,
                             onDesmis = { show = false }
                         )
-                    }
+                    }*/
+                    ScaffoldExample()
 
                 }
             }

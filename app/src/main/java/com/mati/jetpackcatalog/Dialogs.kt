@@ -49,7 +49,7 @@ fun MyConfirmationDialog(
                 MyTitleDialog(text = "Phone ringtone")
                 Divider(Modifier.fillMaxWidth(), color = Color.LightGray)
                 var status by rememberSaveable { mutableStateOf(false) }
-                MyRadioButton
+
             }
         }
     }
