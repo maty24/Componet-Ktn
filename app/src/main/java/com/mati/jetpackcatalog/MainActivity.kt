@@ -58,9 +58,12 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.mati.jetpackcatalog.model.Routes
 import com.mati.jetpackcatalog.ui.theme.CheckInfo
 import com.mati.jetpackcatalog.ui.theme.JetpackcatalogTheme
 
@@ -112,15 +115,47 @@ class MainActivity : ComponentActivity() {
                         )
                     }*/
                     val navigationController = rememberNavController()
-                    NavHost(navController = navigationController, startDestination = "screen1") {
-                        composable("screen1") {
+                    NavHost(
+                        navController = navigationController,
+                        startDestination = Routes.Pantalla1.route
+                    ) {
+                        composable(Routes.Pantalla1.route) {
                             Screen1(navigationController)
                         }
-                        composable("screen2") {
+                        composable(Routes.Pantalla2.route) {
                             Screen2(navigationController)
                         }
-                        composable("screen3") {
+                        composable(Routes.Pantalla3.route) {
                             Screen3(navigationController)
+                        }
+                        //le puese backStackEntry pero puedo ser cualquier nombre, le estoy enviando un parametro trasformado a  Int
+                        composable(
+                            Routes.Pantalla4.route,
+                            arguments = listOf(navArgument("age") {
+                                //definimos el tipo de valor
+                                type = NavType.IntType
+                            })
+                        ) { backStackEntry ->
+                            (
+                                    Screen4(
+                                        navigationController,
+                                        //para obtener el argumento, por defecto me envia un string
+                                        backStackEntry.arguments?.getInt("age") ?: 0
+                                    )
+                                    )
+
+                        }
+                        composable(
+                            Routes.Pantalla5.route,
+                            arguments = listOf(navArgument("name", {
+                                //por defecto le pongo un nombre
+                                defaultValue = "pepe" }))
+                        ) { backStackEntry ->
+                            Screen5(
+                                navigationController,
+                                backStackEntry.arguments?.getString("name")
+                            )
+
                         }
                     }
 
